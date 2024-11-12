@@ -1,7 +1,7 @@
 // components/CopyButton.tsx
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { ClipboardIcon, CheckIcon } from '@heroicons/react/outline';
+import { ClipboardIcon, CheckIcon } from '@heroicons/react/24/outline';
 
 type CopyButtonProps = {
   textToCopy: string;
