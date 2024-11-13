@@ -1,0 +1,93 @@
+// components/FormComponent.tsx
+import React from "react";
+import { UseFormReturn } from "react-hook-form";
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
+import NumberInputWithButtons from "./NumberInputWithButtons";
+import TimeInputWithTimeZone from "./TimeInputWithTimeZone";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+
+type FormFieldProps = {
+  name: string;
+  label: string;
+  placeholder?: string;
+  type: "text" | "select" | "number" | "checkbox" | "timeWithTimeZone" | "date";
+  withButtons?: boolean;
+  allowNegative?: boolean;
+  options?: { value: string; label: string }[];
+};
+
+type FormProps = {
+  form: UseFormReturn<any>;
+  fields: FormFieldProps[];
+};
+
+const FormComponent: React.FC<FormProps> = ({ form, fields }) => {
+  return (
+    <div className="space-y-4">
+      {fields.map((field) => (
+        <FormField
+          key={field.name}
+          control={form.control}
+          name={field.name}
+          render={({ field: formField }) => (
+            <FormItem>
+              <FormLabel>{field.label}</FormLabel>
+              <FormControl>
+                {field.type === "text" && (
+                  <Input placeholder={field.placeholder} {...formField} />
+                )}
+                {field.type === "number" && field.withButtons ? (
+                  <NumberInputWithButtons
+                    value={formField.value}
+                    onChange={formField.onChange}
+                    min={field.allowNegative ? undefined : 0}
+                    step={1}
+                    allowNegative={field.allowNegative}
+                  />
+                ) : field.type === "number" ? (
+                  <Input
+                    type="number"
+                    placeholder={field.placeholder}
+                    {...formField}
+                  />
+                ) : null}
+                {field.type === "checkbox" && (
+                  <Checkbox
+                    checked={formField.value}
+                    onCheckedChange={formField.onChange}
+                  />
+                )}
+                {field.type === "timeWithTimeZone" && (
+                  <TimeInputWithTimeZone
+                    value={formField.value}
+                    onChange={(time, timeZone) => {
+                      form.setValue(`${field.name}_time`, time);
+                      form.setValue(`${field.name}_timeZone`, timeZone);
+                    }}
+                  />
+                )}
+                {field.type === "date" && (
+                  <Input
+                    type="date"
+                    placeholder={field.placeholder}
+                    {...formField}
+                  />
+                )}
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      ))}
+    </div>
+  );
+};
+
+export default FormComponent;
