@@ -1,0 +1,43 @@
+const groupedFields = [
+  {
+    // Un champ individuel sans catégorie
+    name: "username",
+    label: "Username",
+    type: "text",
+    placeholder: "Enter your username"
+  },
+  {
+    // Un autre champ individuel sans catégorie
+    name: "password",
+    label: "Password",
+    type: "text",
+    placeholder: "Enter your password"
+  },
+  {
+    // Un bloc de champs regroupés avec un titre et une description
+    title: "Personal Information",
+    description: "Fill out your personal details below",
+    fields: [
+      { name: "firstName", label: "First Name", type: "text", placeholder: "John" },
+      { name: "lastName", label: "Last Name", type: "text", placeholder: "Doe" },
+      { name: "email", label: "Email", type: "text", placeholder: "john.doe@example.com" },
+      { name: "age", label: "Age", type: "number", withButtons: true, allowNegative: false }
+    ]
+  },
+  {
+    // Un autre bloc de champs regroupés
+    title: "Preferences",
+    description: "Set your preferences",
+    fields: [
+      { name: "notifications", label: "Enable Notifications", type: "checkbox" },
+      { name: "timezone", label: "Time Zone", type: "timeWithTimeZone" },
+    ]
+  },
+  {
+    // Un champ individuel sans catégorie
+    name: "notes",
+    label: "Additional Notes",
+    type: "textarea",
+    placeholder: "Any additional information"
+  }
+];
