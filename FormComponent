@@ -1,3 +1,56 @@
+//FormCompenent.tax avec FormFieldBlock
+
+import React from 'react';
+import { UseFormReturn } from "react-hook-form";
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import FormFieldsBlock from './FormFieldsBlock';
+import { FormFieldProps } from './FormComponent'; // Import FormFieldProps or define it here
+
+type FormProps = {
+  form: UseFormReturn<any>;
+  fields: (FormFieldProps | FormFieldsBlockProps)[]; // Allow blocks and individual fields
+  onSubmit: (data: any) => void;
+};
+
+const FormComponent: React.FC<FormProps> = ({ form, fields, onSubmit }) => {
+  return (
+    <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
+      {fields.map((field, index) =>
+        "fields" in field ? (
+          <FormFieldsBlock
+            key={index}
+            title={field.title}
+            description={field.description}
+            fields={field.fields}
+            form={form}
+          />
+        ) : (
+          <FormField
+            key={field.name}
+            control={form.control}
+            name={field.name}
+            render={({ field: formField }) => (
+              <FormItem>
+                <FormLabel>{field.label}</FormLabel>
+                <FormControl>
+                  {/* Render different field types here */}
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )
+      )}
+      <button type="submit" className="mt-4 btn-primary">
+        Submit
+      </button>
+    </form>
+  );
+};
+
+export default FormComponent;
+
+
 // components/FormComponent.tsx
 import React from "react";
 import { UseFormReturn } from "react-hook-form";
