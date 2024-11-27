@@ -1,4 +1,63 @@
-//FormCompenent.tax avec FormFieldBlock
+import React from "react";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
+import FormFieldBlock from "./FormFieldBlock";
+import CustomFormField from "./CustomFormField";
+
+type FormComponentProps = {
+  form: any; // Instance of `react-hook-form`
+  fields: any[]; // Mixed array of standalone fields and grouped fields
+  cardTitle: string;
+  cardDescription: string;
+};
+
+const FormComponent: React.FC<FormComponentProps> = ({
+  form,
+  fields,
+  cardTitle,
+  cardDescription,
+}) => {
+  return (
+    <Card className="w-full p-6 shadow-lg rounded-md">
+      <CardHeader>
+        <CardTitle>{cardTitle}</CardTitle>
+        <CardDescription>{cardDescription}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-6">
+          {fields.map((field, index) =>
+            field.fields ? (
+              <FormFieldBlock
+                key={index}
+                title={field.title}
+                description={field.description}
+                fields={field.fields}
+                form={form}
+              />
+            ) : (
+              <CustomFormField
+                key={field.name}
+                {...field}
+                formField={form.control.register(field.name)}
+                setValue={form.setValue}
+              />
+            )
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default FormComponent;
+
+
+//FormComponent.tsx avec FormFieldBlock
 
 import React from 'react';
 import { UseFormReturn } from "react-hook-form";
