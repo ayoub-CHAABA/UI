@@ -1,27 +1,45 @@
-import React from 'react';
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
-import { FormFieldProps } from './FormComponent';
-import FormComponent from './FormComponent'; // Assuming FormComponent renders individual fields
+import React from "react";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion";
+import CustomFormField from "./CustomFormField";
 
-type FormFieldsBlockProps = {
+type FormFieldBlockProps = {
   title: string;
   description: string;
-  fields: FormFieldProps[];
-  form: any; // Assuming useForm hook instance is passed
+  fields: any[];
+  form: any; // Instance of `react-hook-form`
 };
 
-const FormFieldsBlock: React.FC<FormFieldsBlockProps> = ({ title, description, fields, form }) => {
+const FormFieldBlock: React.FC<FormFieldBlockProps> = ({
+  title,
+  description,
+  fields,
+  form,
+}) => {
   return (
     <Accordion type="single" collapsible>
-      <AccordionItem value="item-1">
+      <AccordionItem value={`accordion-${title}`}>
         <AccordionTrigger>{title}</AccordionTrigger>
         <AccordionContent>
           <p className="mb-4">{description}</p>
-          <FormComponent form={form} fields={fields} onSubmit={() => {}} />
+          <div className="space-y-4">
+            {fields.map((field) => (
+              <CustomFormField
+                key={field.name}
+                {...field}
+                formField={form.control.register(field.name)}
+                setValue={form.setValue}
+              />
+            ))}
+          </div>
         </AccordionContent>
       </AccordionItem>
     </Accordion>
   );
 };
 
-export default FormFieldsBlock;
+export default FormFieldBlock;
